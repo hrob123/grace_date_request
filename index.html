@@ -6,12 +6,8 @@
 <title>A little question for you 💌</title>
 <style>
   :root{
-    --pink:#ff7aa8;
-    --pink-deep:#ff4f87;
-    --cream:#fff0f5;
-    --rose:#ffd6e6;
-    --text:#7a3b53;
-    --green:#7ed957;
+    --pink:#ff7aa8; --pink-deep:#ff4f87; --cream:#fff0f5;
+    --rose:#ffd6e6; --text:#7a3b53; --green:#5fd13e;
   }
   *{box-sizing:border-box;}
   html,body{height:100%;margin:0;}
@@ -21,84 +17,106 @@
       radial-gradient(1200px 600px at 80% -10%, #ffe3ef 0%, transparent 60%),
       radial-gradient(1000px 500px at 0% 110%, #ffe9f3 0%, transparent 55%),
       linear-gradient(160deg,#fff5f9 0%, #ffe4ef 55%, #ffd9ea 100%);
-    color:var(--text);
-    overflow:hidden;
-    -webkit-font-smoothing:antialiased;
+    color:var(--text); overflow:hidden; -webkit-font-smoothing:antialiased;
   }
 
   /* floating background hearts */
   .bg-hearts{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
   .bg-hearts span{
     position:absolute;bottom:-40px;font-size:22px;opacity:.55;
-    animation:rise linear infinite;
-    filter:drop-shadow(0 2px 4px rgba(255,79,135,.25));
+    animation:rise linear infinite;filter:drop-shadow(0 2px 4px rgba(255,79,135,.25));
   }
   @keyframes rise{
     0%{transform:translateY(0) rotate(0deg);opacity:0;}
-    10%{opacity:.6;}
-    100%{transform:translateY(-115vh) rotate(360deg);opacity:0;}
+    10%{opacity:.6;} 100%{transform:translateY(-115vh) rotate(360deg);opacity:0;}
   }
 
   .wrap{
-    position:relative;z-index:2;
-    min-height:100%;
+    position:relative;z-index:2;min-height:100%;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:28px 18px;text-align:center;
   }
-
   .card{
-    background:rgba(255,255,255,.78);
-    backdrop-filter:blur(6px);
-    border:2px solid #ffd0e2;
-    border-radius:34px;
-    padding:34px 30px 40px;
+    background:rgba(255,255,255,.85);border:2px solid #ffd0e2;border-radius:34px;
+    padding:32px 30px 38px;
     box-shadow:0 24px 60px rgba(255,79,135,.25), inset 0 0 0 6px rgba(255,255,255,.4);
     max-width:560px;width:100%;
-    animation:pop .7s cubic-bezier(.18,.89,.32,1.28) both;
   }
-  @keyframes pop{0%{transform:scale(.8);opacity:0;}100%{transform:scale(1);opacity:1;}}
+
+  .screen{display:none;}
+  .screen.on{display:block;animation:pop .6s cubic-bezier(.18,.89,.32,1.28) both;}
+  @keyframes pop{0%{transform:scale(.85);opacity:0;}100%{transform:scale(1);opacity:1;}}
 
   .dogs{display:flex;justify-content:center;align-items:flex-end;gap:6px;margin-bottom:6px;}
-  .dog-big{width:148px;height:auto;animation:bob 3.2s ease-in-out infinite;}
-  .dog-small{width:84px;height:auto;animation:bob 3.2s ease-in-out infinite .6s;}
+  .dog-big{width:140px;height:auto;animation:bob 3.2s ease-in-out infinite;}
+  .dog-small{width:80px;height:auto;animation:bob 3.2s ease-in-out infinite .6s;}
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-8px) rotate(1deg);}}
 
-  h1{
-    font-size:clamp(26px,5vw,38px);
-    margin:8px 0 4px;line-height:1.15;color:var(--pink-deep);
-    letter-spacing:.3px;
-  }
-  .sub{font-size:clamp(15px,2.6vw,18px);margin:0 0 24px;color:#a85d76;font-weight:600;}
+  h1{font-size:clamp(24px,5vw,36px);margin:8px 0 4px;line-height:1.15;color:var(--pink-deep);letter-spacing:.3px;overflow-wrap:anywhere;}
+  .huge{font-size:clamp(22px,4.6vw,32px);}
+  .sub{font-size:clamp(15px,2.6vw,18px);margin:0 0 22px;color:#a85d76;font-weight:600;}
+  .wobble{display:inline-block;animation:wob 1.3s ease-in-out infinite;}
+  @keyframes wob{0%,100%{transform:rotate(-1.5deg);}50%{transform:rotate(1.5deg);}}
+  /* playful squish when the shy button dodges a tap (mobile) */
+  @keyframes nope{0%{transform:scale(1) rotate(0);}35%{transform:scale(1.16) rotate(-7deg);}100%{transform:scale(1) rotate(0);}}
+  .nope{animation:nope .34s ease;}
 
   .btns{position:relative;display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;min-height:64px;}
 
   button{
-    font-family:inherit;font-weight:700;cursor:pointer;border:none;
-    border-radius:999px;padding:16px 34px;font-size:19px;
-    transition:transform .12s ease, box-shadow .2s ease;
+    font-family:inherit;font-weight:700;cursor:pointer;border:none;border-radius:999px;
+    padding:16px 32px;font-size:18px;transition:transform .12s ease, box-shadow .2s ease;
   }
   button:active{transform:scale(.96);}
+  .good{background:linear-gradient(180deg,#9be86a,#5fd13e);color:#1f5d12;box-shadow:0 10px 22px rgba(95,209,62,.45);}
+  .good:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 14px 28px rgba(95,209,62,.55);}
 
-  #yes{
-    background:linear-gradient(180deg,#9be86a,#5fd13e);
-    color:#1f5d12;box-shadow:0 10px 22px rgba(95,209,62,.45);
+  /* runaway buttons live at <body> level so position:fixed is measured from the
+     viewport — an ancestor with backdrop-filter/transform would otherwise become
+     their containing block and push them off-screen. */
+  .runaway{
+    position:fixed;left:0;top:0;margin:0;visibility:hidden;
+    background:linear-gradient(180deg,#ffb3cd,#ff7aa8);color:#7a1738;
+    box-shadow:0 10px 22px rgba(255,79,135,.4);z-index:50;will-change:left,top;touch-action:none;
   }
-  #yes:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 14px 28px rgba(95,209,62,.55);}
 
-  #no{
-    background:linear-gradient(180deg,#ffb3cd,#ff7aa8);
-    color:#7a1738;box-shadow:0 10px 22px rgba(255,79,135,.4);
-    will-change:left,top;z-index:5;
+  /* picker form */
+  .field{margin:14px 2px;text-align:left;}
+  .field label{display:block;font-weight:700;color:#a85d76;margin-bottom:6px;font-size:14px;}
+  .field input,.field select{
+    width:100%;font-family:inherit;font-size:17px;font-weight:600;color:var(--text);
+    padding:13px 16px;border:2px solid #ffc4da;border-radius:16px;background:#fff7fb;
+    outline:none;transition:border-color .15s, box-shadow .15s;
   }
+  .field input:focus,.field select:focus{border-color:var(--pink-deep);box-shadow:0 0 0 4px rgba(255,79,135,.15);}
+  #lockin{margin-top:10px;width:100%;}
+  #lockin:disabled{filter:grayscale(.55);opacity:.5;cursor:not-allowed;}
+
+  /* reservation ticket */
+  .ticket{position:relative;margin:14px auto 4px;max-width:440px;background:#fff;border-radius:22px;
+    box-shadow:0 18px 40px rgba(255,79,135,.28);overflow:hidden;text-align:left;border:1px solid #ffd6e6;}
+  .ticket .top{background:linear-gradient(135deg,#ff7aa8,#ff4f87);color:#fff;padding:16px 20px;}
+  .ticket .top .k{font-size:11px;letter-spacing:2px;opacity:.92;font-weight:800;}
+  .ticket .top .v{font-size:20px;font-weight:800;line-height:1.2;}
+  .perf{position:relative;height:0;border-top:2px dashed #ffc4da;margin:0;}
+  .perf::before,.perf::after{content:"";position:absolute;top:-11px;width:22px;height:22px;border-radius:50%;background:#fff0f5;}
+  .perf::before{left:-11px;} .perf::after{right:-11px;}
+  .rows{padding:14px 22px 18px;}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed #ffd6e6;font-size:15px;}
+  .row:last-child{border-bottom:none;}
+  .row .lbl{color:#a85d76;font-weight:700;}
+  .row .val{color:#7a3b53;font-weight:800;text-align:right;}
+  .resno{font-family:'Courier New',monospace;font-size:18px;letter-spacing:1.5px;color:var(--pink-deep);}
+  .stamp{position:absolute;right:16px;top:64px;transform:rotate(-14deg);border:3px solid #3a9b22;color:#2f7d1c;
+    border-radius:12px;padding:3px 11px;font-weight:900;letter-spacing:2px;font-size:13px;background:rgba(126,217,87,.14);}
 
   /* celebration */
-  #celebrate{display:none;}
-  #celebrate.show{display:block;animation:pop .6s cubic-bezier(.18,.89,.32,1.28) both;}
-  #celebrate h1{font-size:clamp(30px,6vw,46px);}
-  .confetti{position:fixed;top:-30px;z-index:30;pointer-events:none;font-size:24px;animation:fall linear forwards;}
+  .confetti{position:fixed;top:-30px;z-index:60;pointer-events:none;font-size:24px;animation:fall linear forwards;}
   @keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:0;}}
+  .pulse{animation:pulse 1.1s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
 
-  .foot{margin-top:22px;font-size:13px;color:#c98aa3;font-weight:600;}
+  .foot{margin-top:18px;font-size:13px;color:#c98aa3;font-weight:600;}
 </style>
 </head>
 <body>
@@ -108,100 +126,154 @@
 <div class="wrap">
   <div class="card">
 
-    <!-- THE QUESTION -->
-    <div id="question">
+    <!-- ============ SCREEN 1 — THE ASK ============ -->
+    <section class="screen on" id="screen-ask">
       <div class="dogs">
-        <!-- big dog holding a heart -->
         <svg class="dog-big" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg" aria-label="cute dog">
           <ellipse cx="100" cy="198" rx="60" ry="9" fill="#e9a8c2" opacity=".4"/>
-          <!-- body -->
           <ellipse cx="100" cy="150" rx="54" ry="46" fill="#f6c89a"/>
           <ellipse cx="100" cy="158" rx="34" ry="30" fill="#fbe3c8"/>
-          <!-- paws -->
           <ellipse cx="74" cy="188" rx="15" ry="11" fill="#f6c89a"/>
           <ellipse cx="126" cy="188" rx="15" ry="11" fill="#f6c89a"/>
-          <!-- head -->
           <circle cx="100" cy="86" r="56" fill="#f6c89a"/>
-          <!-- ears -->
           <path d="M48 52 C30 30 42 8 60 22 C70 30 70 54 64 66 Z" fill="#d99a63"/>
           <path d="M152 52 C170 30 158 8 140 22 C130 30 130 54 136 66 Z" fill="#d99a63"/>
-          <!-- face patch -->
           <ellipse cx="100" cy="100" rx="34" ry="30" fill="#fff4e6"/>
-          <!-- eyes -->
-          <circle cx="82" cy="80" r="8.5" fill="#46271a"/>
-          <circle cx="118" cy="80" r="8.5" fill="#46271a"/>
-          <circle cx="85" cy="77" r="3" fill="#fff"/>
-          <circle cx="121" cy="77" r="3" fill="#fff"/>
-          <!-- blush -->
-          <circle cx="66" cy="98" r="9" fill="#ff9bbd" opacity=".6"/>
-          <circle cx="134" cy="98" r="9" fill="#ff9bbd" opacity=".6"/>
-          <!-- nose + mouth -->
+          <circle cx="82" cy="80" r="8.5" fill="#46271a"/><circle cx="118" cy="80" r="8.5" fill="#46271a"/>
+          <circle cx="85" cy="77" r="3" fill="#fff"/><circle cx="121" cy="77" r="3" fill="#fff"/>
+          <circle cx="66" cy="98" r="9" fill="#ff9bbd" opacity=".6"/><circle cx="134" cy="98" r="9" fill="#ff9bbd" opacity=".6"/>
           <ellipse cx="100" cy="98" rx="7" ry="5" fill="#46271a"/>
           <path d="M100 103 v8 M100 111 c-8 0 -12 -5 -12 -5 M100 111 c8 0 12 -5 12 -5" stroke="#46271a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-          <!-- heart held -->
           <path d="M100 150 c-10 -14 -30 -8 -30 6 c0 14 22 24 30 30 c8 -6 30 -16 30 -30 c0 -14 -20 -20 -30 -6 Z" fill="#ff4f87"/>
           <path d="M88 142 c4 -3 9 -2 11 2" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".8"/>
         </svg>
-
-        <!-- small peeking pup -->
         <svg class="dog-small" viewBox="0 0 140 150" xmlns="http://www.w3.org/2000/svg" aria-label="little dog">
           <ellipse cx="70" cy="140" rx="42" ry="7" fill="#e9a8c2" opacity=".4"/>
           <circle cx="70" cy="78" r="46" fill="#d9d2cc"/>
           <path d="M30 60 C16 38 30 24 44 38 C50 46 48 64 44 72 Z" fill="#b7ada6"/>
           <path d="M110 60 C124 38 110 24 96 38 C90 46 92 64 96 72 Z" fill="#b7ada6"/>
           <ellipse cx="70" cy="92" rx="28" ry="24" fill="#f5f1ee"/>
-          <circle cx="56" cy="74" r="7" fill="#3a3a3a"/>
-          <circle cx="84" cy="74" r="7" fill="#3a3a3a"/>
-          <circle cx="58" cy="72" r="2.4" fill="#fff"/>
-          <circle cx="86" cy="72" r="2.4" fill="#fff"/>
-          <circle cx="46" cy="90" r="7" fill="#ff9bbd" opacity=".55"/>
-          <circle cx="94" cy="90" r="7" fill="#ff9bbd" opacity=".55"/>
+          <circle cx="56" cy="74" r="7" fill="#3a3a3a"/><circle cx="84" cy="74" r="7" fill="#3a3a3a"/>
+          <circle cx="58" cy="72" r="2.4" fill="#fff"/><circle cx="86" cy="72" r="2.4" fill="#fff"/>
+          <circle cx="46" cy="90" r="7" fill="#ff9bbd" opacity=".55"/><circle cx="94" cy="90" r="7" fill="#ff9bbd" opacity=".55"/>
           <ellipse cx="70" cy="90" rx="5.5" ry="4" fill="#3a3a3a"/>
           <path d="M70 94 v6 M70 100 c-6 0 -9 -4 -9 -4 M70 100 c6 0 9 -4 9 -4" stroke="#3a3a3a" stroke-width="2" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
-
       <h1>Grace, will you go on a date with me? 🥺</h1>
       <p class="sub">pretty please? 💕</p>
-
-      <div class="btns" id="btns">
-        <button id="yes">Yes 💖</button>
-        <button id="no">No</button>
+      <div class="btns">
+        <button id="yes" class="good">Yes 💖</button>
+        <span style="width:92px;height:56px;display:inline-block;" aria-hidden="true"></span>
       </div>
       <div class="foot">(careful with that "no" button… it's a little shy)</div>
-    </div>
+    </section>
 
-    <!-- CELEBRATION -->
-    <div id="celebrate">
+    <!-- ============ SCREEN 2 — WAIT, REALLY?? ============ -->
+    <section class="screen" id="screen-confirm">
       <div class="dogs">
-        <svg class="dog-big" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg" aria-label="happy dog">
+        <svg class="dog-big" viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg" aria-label="surprised dog">
           <ellipse cx="100" cy="198" rx="60" ry="9" fill="#e9a8c2" opacity=".4"/>
           <ellipse cx="100" cy="150" rx="54" ry="46" fill="#f6c89a"/>
           <ellipse cx="100" cy="158" rx="34" ry="30" fill="#fbe3c8"/>
-          <ellipse cx="70" cy="184" rx="15" ry="11" fill="#f6c89a" transform="rotate(-12 70 184)"/>
-          <ellipse cx="130" cy="184" rx="15" ry="11" fill="#f6c89a" transform="rotate(12 130 184)"/>
+          <ellipse cx="74" cy="188" rx="15" ry="11" fill="#f6c89a"/><ellipse cx="126" cy="188" rx="15" ry="11" fill="#f6c89a"/>
           <circle cx="100" cy="86" r="56" fill="#f6c89a"/>
-          <path d="M48 52 C30 30 42 8 60 22 C70 30 70 54 64 66 Z" fill="#d99a63"/>
-          <path d="M152 52 C170 30 158 8 140 22 C130 30 130 54 136 66 Z" fill="#d99a63"/>
+          <path d="M44 40 C32 14 48 4 62 18 C70 27 70 50 64 62 Z" fill="#d99a63"/>
+          <path d="M156 40 C168 14 152 4 138 18 C130 27 130 50 136 62 Z" fill="#d99a63"/>
           <ellipse cx="100" cy="100" rx="34" ry="30" fill="#fff4e6"/>
-          <!-- happy closed eyes -->
-          <path d="M73 80 c4 -6 12 -6 16 0" stroke="#46271a" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M111 80 c4 -6 12 -6 16 0" stroke="#46271a" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <circle cx="64" cy="100" r="10" fill="#ff9bbd" opacity=".7"/>
-          <circle cx="136" cy="100" r="10" fill="#ff9bbd" opacity=".7"/>
+          <circle cx="82" cy="80" r="11" fill="#fff"/><circle cx="118" cy="80" r="11" fill="#fff"/>
+          <circle cx="82" cy="81" r="6.5" fill="#46271a"/><circle cx="118" cy="81" r="6.5" fill="#46271a"/>
+          <circle cx="84" cy="78" r="2.4" fill="#fff"/><circle cx="120" cy="78" r="2.4" fill="#fff"/>
+          <circle cx="64" cy="100" r="9" fill="#ff9bbd" opacity=".6"/><circle cx="136" cy="100" r="9" fill="#ff9bbd" opacity=".6"/>
           <ellipse cx="100" cy="98" rx="7" ry="5" fill="#46271a"/>
-          <!-- big smile + tongue -->
-          <path d="M84 106 c6 12 26 12 32 0" stroke="#46271a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-          <path d="M96 112 c0 8 8 8 8 0 Z" fill="#ff7a9b"/>
+          <ellipse cx="100" cy="112" rx="9" ry="12" fill="#46271a"/>
         </svg>
       </div>
-      <h1>YAY!! 💞</h1>
-      <p class="sub">I knew you'd say yes, Grace 🥰<br>It's officially a date.</p>
-      <div class="foot">best decision you'll make all week 😌💘</div>
-    </div>
+      <h1 class="huge"><span class="wobble">wait… YOU ACTUALLY SAID YES???????????????????????</span></h1>
+      <p class="sub">no take-backs allowed 😤💕</p>
+      <div class="btns">
+        <button id="yep" class="good">Yep, I meant it 😏</button>
+        <span style="width:200px;height:56px;display:inline-block;" aria-hidden="true"></span>
+      </div>
+      <div class="foot">(try clicking the other one… go on 😈)</div>
+    </section>
+
+    <!-- ============ SCREEN 3 — PICK THE DATE ============ -->
+    <section class="screen" id="screen-pick">
+      <div class="dogs">
+        <svg class="dog-small" viewBox="0 0 140 150" xmlns="http://www.w3.org/2000/svg" aria-label="happy dog">
+          <ellipse cx="70" cy="140" rx="42" ry="7" fill="#e9a8c2" opacity=".4"/>
+          <circle cx="70" cy="78" r="46" fill="#f6c89a"/>
+          <path d="M28 50 C16 28 30 16 44 30 C50 38 48 58 44 66 Z" fill="#d99a63"/>
+          <path d="M112 50 C124 28 110 16 96 30 C90 38 92 58 96 66 Z" fill="#d99a63"/>
+          <ellipse cx="70" cy="92" rx="28" ry="24" fill="#fff4e6"/>
+          <path d="M50 74 c3 -5 10 -5 13 0" stroke="#46271a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <path d="M77 74 c3 -5 10 -5 13 0" stroke="#46271a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <ellipse cx="70" cy="90" rx="5.5" ry="4" fill="#46271a"/>
+          <path d="M58 96 c5 9 19 9 24 0" stroke="#46271a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M67 100 c0 6 6 6 6 0 Z" fill="#ff7a9b"/>
+        </svg>
+      </div>
+      <h1 class="huge">Eee! Let's lock it in 🗓️💞</h1>
+      <p class="sub">pick when, and what we're doing</p>
+
+      <div class="field">
+        <label for="d-date">Date</label>
+        <input type="date" id="d-date" />
+      </div>
+      <div class="field">
+        <label for="d-time">Time</label>
+        <input type="time" id="d-time" />
+      </div>
+      <div class="field">
+        <label for="d-exp">The vibe</label>
+        <select id="d-exp">
+          <option value="" disabled selected>Choose our adventure…</option>
+          <option value="movie">🎬 Movie date</option>
+          <option value="baecation">🏝️ Baecation</option>
+          <option value="broncos">🏉 Broncos game at Suncorp</option>
+          <option value="concert">🎤 Concert</option>
+          <option value="dinner">🍽️ Fancy dinner</option>
+        </select>
+      </div>
+
+      <button id="lockin" class="good" disabled>Reserve our date 💘</button>
+      <div class="foot">don't overthink it 😌 it's gonna be perfect</div>
+    </section>
+
+    <!-- ============ SCREEN 4 — CONFIRMED ============ -->
+    <section class="screen" id="screen-final">
+      <div class="pulse" style="font-size:54px;line-height:1;margin-bottom:4px;">🎉💖🎉</div>
+      <h1>You're officially reserved!</h1>
+      <p class="sub">A date with <strong>Bae (Harry Robertson)</strong> 💘</p>
+
+      <div class="ticket">
+        <div class="top">
+          <div class="k">DATE RESERVATION</div>
+          <div class="v">Grace &nbsp;✕&nbsp; Bae 💕</div>
+          <div class="stamp">CONFIRMED</div>
+        </div>
+        <div class="perf"></div>
+        <div class="rows">
+          <div class="row"><span class="lbl">Reservation #</span><span class="val resno" id="t-resno">—</span></div>
+          <div class="row"><span class="lbl">Guest of honour</span><span class="val">Grace 👑</span></div>
+          <div class="row"><span class="lbl">Your date</span><span class="val">Harry Robertson "Bae" 😎</span></div>
+          <div class="row"><span class="lbl">Experience</span><span class="val" id="t-exp">—</span></div>
+          <div class="row"><span class="lbl">Date</span><span class="val" id="t-date">—</span></div>
+          <div class="row"><span class="lbl">Time</span><span class="val" id="t-time">—</span></div>
+          <div class="row"><span class="lbl">Status</span><span class="val" style="color:#2f7d1c;">✓ Confirmed</span></div>
+          <div class="row"><span class="lbl">Issued</span><span class="val" id="t-issued">—</span></div>
+        </div>
+      </div>
+      <div class="foot">screenshot this 📸 — see you there, gorgeous 💋</div>
+    </section>
 
   </div>
 </div>
+
+<!-- runaway buttons (body level, outside the card) -->
+<button id="no" class="runaway">No</button>
+<button id="accident" class="runaway">no it was an accident</button>
 
 <script>
   /* ---------- background floating hearts ---------- */
@@ -219,96 +291,165 @@
     }
   })();
 
-  /* ---------- the shy NO button ---------- */
-  const no=document.getElementById('no');
+  /* ---------- shared pointer ---------- */
+  const pointer={x:-9999,y:-9999};
+  const setPtr=e=>{pointer.x=e.clientX;pointer.y=e.clientY;};
+  addEventListener('pointermove',setPtr,{passive:true});
+  addEventListener('pointerdown',setPtr,{passive:true});
+
+  /* ---------- reusable runaway button ---------- */
+  // touch screens have no hover, so the button can't flee *before* a tap —
+  // instead it leaps away the instant a finger lands. Bigger radius keeps the
+  // finger from immediately re-covering it.
+  const isTouch = (window.matchMedia && matchMedia('(hover: none), (pointer: coarse)').matches) || 'ontouchstart' in window;
+  const R = isTouch ? 155 : 130;
+  const pad=14, EASE=0.28;
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const repellers=[];
+
+  function Runaway(btn, taunts, partner){
+    const o={btn,taunts,partner,bx:0,by:0,tx:0,ty:0,fled:0,placed:false,active:false};
+    o.bounds=()=>{const hw=btn.offsetWidth/2||46, hh=btn.offsetHeight/2||28;
+      return {minX:pad+hw,maxX:innerWidth-pad-hw,minY:pad+hh,maxY:innerHeight-pad-hh};};
+    o.draw=()=>{btn.style.left=(o.bx-(btn.offsetWidth/2||46))+'px';btn.style.top=(o.by-(btn.offsetHeight/2||28))+'px';};
+    o.place=(anchor)=>{
+      const r=anchor.getBoundingClientRect(); const b=o.bounds();
+      o.bx=clamp(r.right+18+(btn.offsetWidth/2||46), b.minX, b.maxX);
+      o.by=clamp(r.top+r.height/2,                   b.minY, b.maxY);
+      o.tx=o.bx;o.ty=o.by;o.fled=0;o.draw();
+      btn.style.visibility='visible';o.placed=true;
+    };
+    o.repelTarget=()=>{
+      const b=o.bounds(); const a0=Math.atan2(o.by-pointer.y, o.bx-pointer.x);
+      for(let s=0;s<=24;s++){const tr=s===0?[0]:[s,-s];
+        for(const k of tr){const a=a0+k*(Math.PI/24);
+          const cx=pointer.x+Math.cos(a)*R, cy=pointer.y+Math.sin(a)*R;
+          if(cx>=b.minX&&cx<=b.maxX&&cy>=b.minY&&cy<=b.maxY) return [cx,cy];}}
+      return [clamp(pointer.x+Math.cos(a0)*R,b.minX,b.maxX), clamp(pointer.y+Math.sin(a0)*R,b.minY,b.maxY)];
+    };
+    // instant dodge: snap a tap's pointer position, leap part-way immediately
+    // (so the move reads on touch), then the loop eases the rest + adds a squish
+    o.dodge=(x,y)=>{
+      pointer.x=x; pointer.y=y;
+      const t=o.repelTarget(); o.tx=t[0]; o.ty=t[1];
+      o.bx += (o.tx-o.bx)*0.6; o.by += (o.ty-o.by)*0.6; o.draw();
+      btn.classList.remove('nope'); void btn.offsetWidth; btn.classList.add('nope');
+    };
+    btn.addEventListener('click',e=>e.preventDefault());
+    btn.addEventListener('pointerdown',e=>{ e.preventDefault(); if(o.active) o.dodge(e.clientX,e.clientY); });
+    repellers.push(o);
+    return o;
+  }
+
+  function loop(){
+    for(const o of repellers){
+      if(!o.active||!o.placed) continue;
+      if(Math.hypot(o.bx-pointer.x, o.by-pointer.y) < R){const t=o.repelTarget();o.tx=t[0];o.ty=t[1];}
+      const ox=o.bx, oy=o.by;
+      o.bx+=(o.tx-o.bx)*EASE; o.by+=(o.ty-o.by)*EASE;
+      const st=Math.hypot(o.bx-ox, o.by-oy);
+      if(st>0.25){
+        o.draw(); o.fled+=st;
+        const idx=Math.min(Math.floor(o.fled/700), o.taunts.length-1);
+        if(o.btn.textContent!==o.taunts[idx]) o.btn.textContent=o.taunts[idx];
+        if(o.partner) o.partner.style.transform='scale('+Math.min(1+o.fled/4500,1.55)+')';
+      }
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  addEventListener('resize',()=>{
+    for(const o of repellers){ if(!o.placed) continue;
+      const b=o.bounds();
+      o.bx=clamp(o.bx,b.minX,b.maxX); o.by=clamp(o.by,b.minY,b.maxY);
+      o.tx=clamp(o.tx,b.minX,b.maxX); o.ty=clamp(o.ty,b.minY,b.maxY); o.draw(); }
+  });
+
+  /* ---------- screens ---------- */
   const yes=document.getElementById('yes');
-  const btns=document.getElementById('btns');
+  const yep=document.getElementById('yep');
+  const lockin=document.getElementById('lockin');
 
-  let moved=false;
-  let dodges=0;
-  const taunts=["No","No?","you sure? 🥺","really??","think again 💔","please? 😭","don't be mean!","one more chance…","catch me first! 🏃‍♀️","just say yes 💕"];
+  const noBtn=Runaway(document.getElementById('no'),
+    ["No","No?","you sure? 🥺","really??","think again 💔","please? 😭","don't be mean!","catch me first! 🏃‍♀️","just say yes 💕"], yes);
+  const accidentBtn=Runaway(document.getElementById('accident'),
+    ["no it was an accident","too late now 😌","it's binding 📜","you can't un-say it!","accident? sure 🙃","you meant it 💕","stop running 🏃‍♀️","just commit 💘"], yep);
 
-  function placeInline(){
-    if(moved) return;
-    const r=no.getBoundingClientRect();
-    no.dataset.x=r.left; no.dataset.y=r.top;
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
   }
 
-  function goFixed(){
-    const r=no.getBoundingClientRect();
-    no.style.position='fixed';
-    no.style.margin='0';
-    no.style.left=r.left+'px';
-    no.style.top=r.top+'px';
-    moved=true;
+  function activate(runner, anchor){
+    runner.btn.style.display='';
+    requestAnimationFrame(()=>{ runner.place(anchor); runner.active=true; });
+    setTimeout(()=>{ if(!runner.fled) runner.place(anchor); }, 700);  // re-anchor after pop animation
   }
 
-  function moveAway(px,py){
-    if(!moved) goFixed();
-    const r=no.getBoundingClientRect();
-    const cx=r.left+r.width/2;
-    const cy=r.top+r.height/2;
-    let dx=cx-px, dy=cy-py;
-    let dist=Math.hypot(dx,dy)||1;
-    if(dx===0&&dy===0){dx=Math.random()-0.5;dy=Math.random()-0.5;dist=Math.hypot(dx,dy);}
-    // jump distance grows a touch each dodge for extra chaos
-    const jump=130+Math.min(dodges*6,70);
-    let nx=cx+(dx/dist)*jump - r.width/2;
-    let ny=cy+(dy/dist)*jump - r.height/2;
-
-    const pad=12;
-    const maxX=window.innerWidth - r.width - pad;
-    const maxY=window.innerHeight - r.height - pad;
-    // if pushed off an edge, bounce to a fresh random safe spot
-    if(nx<pad||nx>maxX||ny<pad||ny>maxY){
-      nx=pad+Math.random()*Math.max(1,maxX-pad);
-      ny=pad+Math.random()*Math.max(1,maxY-pad);
-    }
-    no.style.left=nx+'px';
-    no.style.top=ny+'px';
-
-    dodges++;
-    no.textContent=taunts[Math.min(dodges,taunts.length-1)];
-    // nudge: make YES more tempting
-    const grow=Math.min(1+dodges*0.06,1.6);
-    yes.style.transform='scale('+grow+')';
-  }
-
-  // repel when the cursor gets close
-  const THRESHOLD=120;
-  window.addEventListener('mousemove',(e)=>{
-    const r=no.getBoundingClientRect();
-    const cx=r.left+r.width/2, cy=r.top+r.height/2;
-    if(Math.hypot(cx-e.clientX,cy-e.clientY)<THRESHOLD){
-      moveAway(e.clientX,e.clientY);
-    }
+  // initial: ask screen
+  addEventListener('load',()=>{
+    activate(noBtn, yes);
+    const dEl=document.getElementById('d-date');
+    if(dEl) dEl.min=new Date().toISOString().slice(0,10);
   });
-  // touch / mobile: dodge on tap-attempt
-  no.addEventListener('touchstart',(e)=>{
-    e.preventDefault();
-    const t=e.touches[0];
-    moveAway(t.clientX,t.clientY);
-  },{passive:false});
-  // and if anyone actually manages to hover/click it, still run away
-  no.addEventListener('mouseenter',(e)=>moveAway(e.clientX,e.clientY));
-  no.addEventListener('click',(e)=>{e.preventDefault();moveAway(e.clientX,e.clientY);});
 
-  window.addEventListener('resize',placeInline);
-  placeInline();
-
-  /* ---------- YES → celebration ---------- */
+  // Yes -> confirm screen
   yes.addEventListener('click',()=>{
-    document.getElementById('question').style.display='none';
-    document.getElementById('celebrate').classList.add('show');
-    burst();
-    // a couple of follow-up bursts
-    setTimeout(burst,500);
-    setTimeout(burst,1100);
+    noBtn.active=false; noBtn.btn.style.display='none';
+    showScreen('screen-confirm');
+    activate(accidentBtn, yep);
+    burst(22);
   });
 
-  function burst(){
-    const icons=['💖','💕','💗','💞','🩷','🌹','✨','💘'];
-    for(let i=0;i<60;i++){
+  // Yep -> picker screen
+  yep.addEventListener('click',()=>{
+    accidentBtn.active=false; accidentBtn.btn.style.display='none';
+    showScreen('screen-pick');
+    burst(22);
+  });
+
+  /* ---------- picker ---------- */
+  const dateIn=document.getElementById('d-date');
+  const timeIn=document.getElementById('d-time');
+  const expIn =document.getElementById('d-exp');
+  const expMap={
+    movie:'🎬 Movie date', baecation:'🏝️ Baecation',
+    broncos:'🏉 Broncos game at Suncorp', concert:'🎤 Concert', dinner:'🍽️ Fancy dinner'
+  };
+  function checkReady(){ lockin.disabled=!(dateIn.value && timeIn.value && expIn.value); }
+  [dateIn,timeIn,expIn].forEach(el=>{ el.addEventListener('change',checkReady); el.addEventListener('input',checkReady); });
+
+  function fmtDate(v){ if(!v) return '—';
+    const d=new Date(v+'T00:00');
+    return d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); }
+  function fmtTime(v){ if(!v) return '—';
+    let [h,m]=v.split(':'); h=+h; const ap=h>=12?'PM':'AM'; h=h%12||12; return h+':'+m+' '+ap; }
+  function genRes(){
+    const ch='ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let s='';
+    for(let i=0;i<4;i++) s+=ch[Math.floor(Math.random()*ch.length)];
+    const d=new Date(); const yy=String(d.getFullYear()).slice(2);
+    const mm=String(d.getMonth()+1).padStart(2,'0'); const dd=String(d.getDate()).padStart(2,'0');
+    return 'BAE-'+yy+mm+dd+'-'+s;
+  }
+
+  // Lock it in -> final screen
+  lockin.addEventListener('click',()=>{
+    document.getElementById('t-resno').textContent=genRes();
+    document.getElementById('t-exp').textContent=expMap[expIn.value]||'—';
+    document.getElementById('t-date').textContent=fmtDate(dateIn.value);
+    document.getElementById('t-time').textContent=fmtTime(timeIn.value);
+    document.getElementById('t-issued').textContent=
+      new Date().toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit',hour12:true});
+    showScreen('screen-final');
+    celebrate();
+  });
+
+  /* ---------- celebration ---------- */
+  function burst(n){
+    n=n||60;
+    const icons=['💖','💕','💗','💞','🩷','🌹','✨','💘','🎉'];
+    for(let i=0;i<n;i++){
       const c=document.createElement('div');
       c.className='confetti';
       c.textContent=icons[Math.floor(Math.random()*icons.length)];
@@ -319,6 +460,10 @@
       document.body.appendChild(c);
       setTimeout(()=>c.remove(),5200);
     }
+  }
+  function celebrate(){
+    burst(90);
+    let t=0; const iv=setInterval(()=>{ burst(45); if(++t>=6) clearInterval(iv); }, 420);
   }
 </script>
 </body>
